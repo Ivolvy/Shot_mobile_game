@@ -1,11 +1,18 @@
-import RainbowText from 'objects/RainbowText';
+import SplashState from 'states/SplashState';
 
 class GameState extends Phaser.State {
 
-	create() {
-		let center = { x: this.game.world.centerX, y: this.game.world.centerY };
-		let text = new RainbowText(this.game, center.x, center.y, "Shot game!");
-		text.anchor.set(0.5);
+	preload(){
+		//this.add.plugin(Phaser.Plugin.Debug); //Add this to enable debug mode
+
+		//this refers to Phaser.Game instance
+		this.load.image('splash', 'assets/images/splash_screen.png');
+		this.load.image('loading', 'assets/images/loading.png');
+	}
+
+	create(){
+		 this.state.add('Splash', SplashState);
+		 this.state.start('Splash');
 	}
 
 }

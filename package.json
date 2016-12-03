@@ -1,6 +1,6 @@
 {
-  "name": "Shot game",
-  "version": "1.0.2",
+  "name": "shot_mobile_game",
+  "version": "0.0.1",
   "description": "Shot game",
   "main": "src/index.js",
   "scripts": {
