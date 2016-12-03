@@ -1,5 +1,5 @@
 import GameState from 'states/GameState';
-
+import Utils from 'libs/Utils';
 
 class Game extends Phaser.Game {
 
@@ -10,6 +10,9 @@ class Game extends Phaser.Game {
 		super(480, 800, Phaser.AUTO, 'content', null);
 		this.state.add('GameState', GameState, false);
 		this.state.start('GameState');
+
+		//Init params to play sound and music
+		Utils.initMusic();
 	}
 
 }

@@ -1,40 +1,35 @@
-import Utils from 'libs/Utils';
 
-class GameMenuState extends Phaser.State {
+class LeaderBoardState extends Phaser.State {
 
     init() {
-        this.titleText = this.game.make.text(this.game.world.centerX, 100, "Game Title", {
+        this.titleText = this.game.make.text(this.game.world.centerX, 100, "LeaderBoard", {
             font: 'bold 60pt TheMinion',
             fill: '#FDFFB5',
             align: 'center'
         });
         this.titleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         this.titleText.anchor.set(0.5);
+        this.optionCount = 1;
     }
 
     preload(){
-        this.optionCount = 1;
+
     }
+
 
     create(){
         var that = this;
 
-        this.game.add.sprite(0, 0, 'menu-bg');
+
+        this.game.add.sprite(0, 0, 'leaderBoard-bg');
         this.game.add.existing(this.titleText);
 
-        this.game.stage.disableVisibilityChange = true; //don't pause the game on focus out
+        this.addMenuOption('<- Back', function (target) {
+            that.game.state.start("GameMenu");
+        });
 
-
-        this.addMenuOption('Start', function (target) {
-            that.game.state.start("Playable");
-        });
-        this.addMenuOption('Options', function (target) {
-            that.game.state.start("Options");
-        });
-        this.addMenuOption('LeaderBoard', function (target) {
-            that.game.state.start("LeaderBoard");
-        });
     }
+
 
     addMenuOption(text, callback) {
         var optionStyle = {
@@ -52,6 +47,7 @@ class GameMenuState extends Phaser.State {
         this.optionCount++;
     }
 
+
 }
 
-export default GameMenuState;
+export default LeaderBoardState;

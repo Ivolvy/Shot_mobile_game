@@ -6,7 +6,7 @@ class GameState extends Phaser.State {
 		//this.add.plugin(Phaser.Plugin.Debug); //Add this to enable debug mode
 
 		//this refers to Phaser.Game instance
-		this.load.image('splash', 'assets/images/splash_screen.png');
+		this.load.image('splash-screen-bg', 'assets/images/splash_screen.png');
 		this.load.image('loading', 'assets/images/loading.png');
 	}
 
