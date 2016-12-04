@@ -37,6 +37,10 @@ class SplashState extends Phaser.State {
     }
 
     init(){
+        this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.scale.refresh();
+
         this.game.add.sprite(0, 0, 'splash-screen-bg');
         // Add the loadingBar to the scene:
         this.loadingBar = this.game.make.sprite(this.game.world.centerX-(387/2), 400, "loading");

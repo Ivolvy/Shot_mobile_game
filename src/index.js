@@ -7,7 +7,14 @@ class Game extends Phaser.Game {
 		//super call the parent constructor - here Phaser.Game
 		//As we do new Phaser.Game(..,..)
         //window.innerWidth - window.innerHeight
-		super(480, 800, Phaser.AUTO, 'content', null);
+
+
+		var gameWidth = 480;
+		var gameHeight = 800;
+
+		super(gameWidth, gameHeight, Phaser.CANVAS, 'content', null);
+
+
 		this.state.add('GameState', GameState, false);
 		this.state.start('GameState');
 

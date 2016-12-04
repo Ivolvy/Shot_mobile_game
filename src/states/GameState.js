@@ -2,6 +2,19 @@ import SplashState from 'states/SplashState';
 
 class GameState extends Phaser.State {
 
+
+	init(){
+		// set up input max pointers
+		this.game.input.maxPointers = 1;
+
+		this.game.stage.disableVisibilityChange = true; //don't pause the game on focus out
+
+		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		/*this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;*/
+		this.game.scale.refresh();
+
+	}
+
 	preload(){
 		//this.add.plugin(Phaser.Plugin.Debug); //Add this to enable debug mode
 
