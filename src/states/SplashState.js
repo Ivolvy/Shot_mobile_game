@@ -20,9 +20,14 @@ class SplashState extends Phaser.State {
         this.game.load.image('leaderBoard-bg', 'assets/images/leaderBoard-screen.png');
         this.game.load.image('playable-bg', 'assets/images/playable-screen.png');
 
+        this.game.load.image('timer-back', 'assets/images/timer-back.png');
+
         this.game.load.image('timer-image-1', 'assets/images/timer-image-1.png');
         this.game.load.image('timer-image-2', 'assets/images/timer-image-2.png');
         this.game.load.image('timer-image-3', 'assets/images/timer-image-3.png');
+
+        this.game.load.image('pause-menu', 'assets/images/pause-menu.png');
+        this.game.load.image('pause-button', 'assets/images/pause-button.png');
 
         this.game.load.image('panda-image', 'assets/images/panda-image.png');
     }

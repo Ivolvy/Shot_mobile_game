@@ -2,12 +2,23 @@ class PlayableState extends Phaser.State {
 
     init() {
         this.itemsTab = [];
+        this.counter = 30; //The time before the game end
+        this.gameIsPaused = false;
     }
 
     preload(){
         var that = this;
 
         this.game.add.sprite(0, 0, 'playable-bg');
+
+        //Add the back image of the timer
+        this.timerBack = this.game.add.sprite(10, 75, 'timer-back');
+        this.counterText = this.game.add.text(30, 80, this.counter, { font: "64px Arial", fill: "#ffffff", align: "center" });
+        //this.counterText.anchor.setTo(0.5, 0.5);
+        this.pauseButton = this.game.add.sprite(this.game.world.width-100, 80, 'pause-button');
+        this.pauseButton.inputEnabled = true;
+        this.pauseButton.events.onInputUp.add(this.pauseGame, this);
+
 
         //Create clickable areas
         this.leftInput = new Phaser.Rectangle(0,this.game.height-200,160,this.game.height);
@@ -20,15 +31,18 @@ class PlayableState extends Phaser.State {
 
         //test if we click on part left, center or right
         this.game.input.onDown.add(function(pointer){
-            if(that.leftInput.contains(pointer.x,pointer.y)){
-                console.log('left input');
-                that.destroyObject('left');
-            } else if(that.centerInput.contains(pointer.x,pointer.y)){
-                console.log('center input');
-                that.destroyObject('center');
-            } else if(that.rightInput.contains(pointer.x,pointer.y)){
-                console.log('right input');
-                that.destroyObject('right');
+            //Fire events only when the game is not paused
+            if(!that.gameIsPaused){
+                if(that.leftInput.contains(pointer.x,pointer.y)){
+                    console.log('left input');
+                    that.destroyObject('left');
+                } else if(that.centerInput.contains(pointer.x,pointer.y)){
+                    console.log('center input');
+                    that.destroyObject('center');
+                } else if(that.rightInput.contains(pointer.x,pointer.y)){
+                    console.log('right input');
+                    that.destroyObject('right');
+                }
             }
         });
     }
@@ -46,8 +60,8 @@ class PlayableState extends Phaser.State {
         this.timer2 = this.game.make.sprite(this.game.world.centerX, 200, 'timer-image-2');
         this.timer3 = this.game.make.sprite(this.game.world.centerX, 200, 'timer-image-3');
 
-       // this.launchTimer();
-        this.populateTab();
+        this.launchTimer();
+        //this.populateTab();
     }
 
     //Launch a timer before the game start
@@ -72,12 +86,60 @@ class PlayableState extends Phaser.State {
                 case 4:
                     that.timer1.destroy();
                     clearInterval(that.startTimer);
+                    that.counterBeforeEnd();
                     that.populateTab();
                     break;
             }
 
             that.timerCount+=1;
         }, 1000);
+    }
+
+    /**
+     * Counter before the game end
+     */
+    counterBeforeEnd(){
+        this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
+    }
+
+    /**
+     * Update the counter
+     */
+    updateCounter() {
+        this.counter--;
+        this.counterText.setText(this.counter);
+        if(this.counter == 0){
+            this.game.time.events.stop();
+            
+            //STOP THE GAME HERE
+        }
+    }
+
+
+    pauseGame(){
+        //We pause the game
+        this.gameIsPaused = true;
+        //We stope the counter
+        this.game.time.events.pause();
+
+        //Add pause menu
+        this.pauseMenu = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'pause-menu');
+        this.pauseMenu.anchor.setTo(0.5, 0.5);
+        this.pauseMenu.inputEnabled = true;
+        this.pauseMenu.events.onInputUp.add(this.resumeGame, this);
+
+    }
+
+    resumeGame(){
+        // Remove the menu and the labels
+        this.pauseMenu.destroy();
+        //customLabel.destroy(); //The options in the menu
+
+        //We resume the counter
+        this.game.time.events.resume();
+
+        //Resume the game
+        this.gameIsPaused = false;
     }
 
     //Create the first indexes with random position (left, center or right)
@@ -141,7 +203,13 @@ class PlayableState extends Phaser.State {
             });
 
         }
+
+        //Bring to top this elements - to be above the objects
+        this.timerBack.bringToTop();
+        this.counterText.bringToTop();
+        this.pauseButton.bringToTop();
         console.log(this.itemsTab);
+
     }
 
     createElementToEnd(){
