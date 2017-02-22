@@ -73,28 +73,30 @@ class PlayableState extends Phaser.State {
 
         this.timerCount = 0;
         this.startTimer = setInterval(function(){
+            if(!that.gameIsPaused) {
 
-            switch(that.timerCount){
-                case 1:
-                    that.game.add.existing(that.timer3).scale.setTo(0.5);
-                    break;
-                case 2:
-                    that.game.add.existing(that.timer2).scale.setTo(0.5);
-                    that.timer3.destroy();
-                    break;
-                case 3:
-                    that.game.add.existing(that.timer1).scale.setTo(0.5);
-                    that.timer2.destroy();
-                    break;
-                case 4:
-                    that.timer1.destroy();
-                    clearInterval(that.startTimer);
-                    that.counterBeforeEnd();
-                    that.populateTab();
-                    break;
+                switch (that.timerCount) {
+                    case 1:
+                        that.game.add.existing(that.timer3).scale.setTo(0.5);
+                        break;
+                    case 2:
+                        that.game.add.existing(that.timer2).scale.setTo(0.5);
+                        that.timer3.destroy();
+                        break;
+                    case 3:
+                        that.game.add.existing(that.timer1).scale.setTo(0.5);
+                        that.timer2.destroy();
+                        break;
+                    case 4:
+                        that.timer1.destroy();
+                        clearInterval(that.startTimer);
+                        that.counterBeforeEnd();
+                        that.populateTab();
+                        break;
+                }
+
+                that.timerCount += 1;
             }
-
-            that.timerCount+=1;
         }, 1000);
     }
 
@@ -135,6 +137,9 @@ class PlayableState extends Phaser.State {
 
         //Group fo texts in pause menu
         this.textGroup = this.game.add.group();
+
+        //Remove event on pause button
+        this.pauseButton.events.onInputUp.remove(this.pauseGame, this);
 
         this.addPauseOption('Resume', function (target) {
             that.resumeGame();
@@ -178,6 +183,9 @@ class PlayableState extends Phaser.State {
 
         //We resume the counter
         this.game.time.events.resume();
+
+        //Re-add click event on pause button
+        this.pauseButton.events.onInputUp.add(this.pauseGame, this);
 
         //Resume the game
         this.gameIsPaused = false;
