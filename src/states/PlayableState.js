@@ -2,7 +2,7 @@ class PlayableState extends Phaser.State {
 
     init() {
         this.itemsTab = [];
-        this.counter = 30; //The time before the game end
+        this.counter = 5; //The time before the game end
         this.gameIsPaused = false;
 
         this.optionCount = 1;
@@ -117,6 +117,7 @@ class PlayableState extends Phaser.State {
             this.game.time.events.stop();
             
             //STOP THE GAME HERE
+            this.game.state.start("EndGame");
         }
     }
 

@@ -3,6 +3,7 @@ import LeaderBoard from "./LeaderBoardState";
 import GameMenu from "./GameMenu";
 import OptionsState from "./OptionsState";
 import PlayableState from "./PlayableState";
+import EndGameState from "./EndGameState";
 
 class SplashState extends Phaser.State {
 
@@ -19,6 +20,7 @@ class SplashState extends Phaser.State {
         this.game.load.image('options-bg', 'assets/images/options-screen.png');
         this.game.load.image('leaderBoard-bg', 'assets/images/leaderBoard-screen.png');
         this.game.load.image('playable-bg', 'assets/images/playable-screen.png');
+        this.game.load.image('endGame-bg', 'assets/images/endGame-screen.png');
 
         this.game.load.image('timer-back', 'assets/images/timer-back.png');
 
@@ -72,6 +74,7 @@ class SplashState extends Phaser.State {
         this.game.state.add("LeaderBoard", LeaderBoard);
         this.game.state.add("Options", OptionsState);
         this.game.state.add("Playable", PlayableState);
+        this.game.state.add("EndGame", EndGameState);
     }
 
     create() {

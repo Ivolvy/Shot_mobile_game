@@ -38,6 +38,7 @@ class OptionsState extends Phaser.State {
         this.addMenuOption(this.playSound ? 'Mute Sound' : 'Play Sound', function (target) {
             that.playSound = !that.playSound;
             target.text = that.playSound ? 'Mute Sound' : 'Play Sound';
+            Utils.setPlaySound(that.playSound);
         });
 
         this.addMenuOption('<- Back', function (target) {
