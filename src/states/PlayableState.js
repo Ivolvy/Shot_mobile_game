@@ -4,6 +4,9 @@ class PlayableState extends Phaser.State {
         this.itemsTab = [];
         this.counter = 30; //The time before the game end
         this.gameIsPaused = false;
+
+        this.optionCount = 1;
+
     }
 
     preload(){
@@ -117,23 +120,61 @@ class PlayableState extends Phaser.State {
 
 
     pauseGame(){
+        var that = this;
+
         //We pause the game
         this.gameIsPaused = true;
-        //We stope the counter
+        //We stop the counter
         this.game.time.events.pause();
 
         //Add pause menu
         this.pauseMenu = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'pause-menu');
         this.pauseMenu.anchor.setTo(0.5, 0.5);
         this.pauseMenu.inputEnabled = true;
-        this.pauseMenu.events.onInputUp.add(this.resumeGame, this);
+        //this.pauseMenu.events.onInputUp.add(this.resumeGame, this);
 
+        //Group fo texts in pause menu
+        this.textGroup = this.game.add.group();
+
+        this.addPauseOption('Resume', function (target) {
+            that.resumeGame();
+        });
+        this.addPauseOption('Restart', function (target) {
+            that.game.state.start("Playable");
+        });
+        this.addPauseOption('Quit to menu', function (target) {
+            that.game.state.start("GameMenu");
+        });
+
+    }
+
+    //All text for pause menu
+    addPauseOption(text, callback) {
+        var optionStyle = {
+            font: '30pt TheMinion',
+            fill: 'white',
+            align: 'left',
+            stroke: 'rgba(0,0,0,0)',
+            srokeThickness: 4
+        };
+
+        var txt = this.game.add.text(100, (this.optionCount * 80) + 200, text, optionStyle, this.textGroup);
+
+        txt.inputEnabled = true;
+        txt.events.onInputUp.add(callback);
+
+        this.optionCount++;
     }
 
     resumeGame(){
         // Remove the menu and the labels
         this.pauseMenu.destroy();
-        //customLabel.destroy(); //The options in the menu
+
+        //Remove all texts in pause menu
+        this.textGroup.destroy();
+
+        //Reset optionCount for text position in pause menu
+        this.optionCount = 1;
 
         //We resume the counter
         this.game.time.events.resume();
