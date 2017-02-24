@@ -2,10 +2,16 @@ class PlayableState extends Phaser.State {
 
     init() {
         this.itemsTab = [];
-        this.counter = 5; //The time before the game end
+        this.counter = 35; //The time before the game end
         this.gameIsPaused = false;
 
         this.optionCount = 1;
+
+        this.intervalPandasChange = 20;
+        this.numberOfFeeded = 0;
+        this.typeOfPanda = "panda-image"; //green - blue - ...
+
+        this.nbCurrentPandaInList = 0;
 
     }
 
@@ -234,13 +240,13 @@ class PlayableState extends Phaser.State {
 
                 //If the left position is set to 1 - [1,0,0]
                 if(index == 0 && element == 1){
-                    that.previousObjects[run] = that.pandas.create(that.game.world.centerX-220, that.game.world.height-240-that.yPosition, 'panda-image');
+                    that.previousObjects[run] = that.pandas.create(that.game.world.centerX-220, that.game.world.height-240-that.yPosition, that.typeOfPanda);
                     that.yPosition+=90; //Create elements at top of the others
                 } else if(index == 1 && element == 1){ //Center position
-                    that.previousObjects[run] = that.pandas.create(that.game.world.centerX-60, that.game.world.height-240-that.yPosition, 'panda-image');
+                    that.previousObjects[run] = that.pandas.create(that.game.world.centerX-60, that.game.world.height-240-that.yPosition, that.typeOfPanda);
                     that.yPosition+=90;
                 } else if(index == 2 && element == 1){ //Right position
-                    that.previousObjects[run] = that.pandas.create(that.game.world.centerX+100, that.game.world.height-240-that.yPosition, 'panda-image');
+                    that.previousObjects[run] = that.pandas.create(that.game.world.centerX+100, that.game.world.height-240-that.yPosition, that.typeOfPanda);
                     that.yPosition+=90;
                 }
 
@@ -252,6 +258,9 @@ class PlayableState extends Phaser.State {
 
             });
 
+
+            //Increase the current panda number in list
+            this.nbCurrentPandaInList+=1;
         }
 
         //Bring to top this elements - to be above the objects
@@ -263,6 +272,14 @@ class PlayableState extends Phaser.State {
     }
 
     createElementToEnd(){
+        var that = this;
+
+        //Select type of panda (different color and attributed points)
+        if(that.nbCurrentPandaInList == that.intervalPandasChange){
+            that.typeOfPanda = "panda-image-green";
+        } else if(that.nbCurrentPandaInList == that.intervalPandasChange*2){
+            that.typeOfPanda = "panda-image-blue";
+        }
 
         //Move all the sprite group to bottom
         this.pandas.y+=90;
@@ -271,11 +288,11 @@ class PlayableState extends Phaser.State {
         if(this.itemsTab[this.lastPopulate]){
             //To enable if we want to crete object dynamically
             if (this.itemsTab[this.lastPopulate][0] == 1) {
-                this.previousObjects.push(this.pandas.create(this.game.world.centerX - 220, this.game.world.height - 240 - this.yPosition, 'panda-image'));
+                this.previousObjects.push(this.pandas.create(this.game.world.centerX - 220, this.game.world.height - 240 - this.yPosition, that.typeOfPanda));
             } else if (this.itemsTab[this.lastPopulate][1] == 1) {
-                this.previousObjects.push(this.pandas.create(this.game.world.centerX - 60, this.game.world.height - 240 - this.yPosition, 'panda-image'));
+                this.previousObjects.push(this.pandas.create(this.game.world.centerX - 60, this.game.world.height - 240 - this.yPosition, that.typeOfPanda));
             } else if (this.itemsTab[this.lastPopulate][2] == 1) {
-                this.previousObjects.push(this.pandas.create(this.game.world.centerX + 100, this.game.world.height - 240 - this.yPosition, 'panda-image'));
+                this.previousObjects.push(this.pandas.create(this.game.world.centerX + 100, this.game.world.height - 240 - this.yPosition, that.typeOfPanda));
             }
         }
 
@@ -283,6 +300,9 @@ class PlayableState extends Phaser.State {
 
         //Re-sort z-index for entire group with newly created objects
         this.pandas.sort('y', Phaser.Group.SORT_ASCENDING);
+
+        //Increase the current panda number in list
+        this.nbCurrentPandaInList+=1;
     }
 
     //Delete elements we tap on
@@ -308,6 +328,8 @@ class PlayableState extends Phaser.State {
             console.log('destroy right');
             this.createElementToEnd();
         }
+
+        this.numberOfFeeded+=1;
     }
 
 

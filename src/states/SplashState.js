@@ -32,6 +32,8 @@ class SplashState extends Phaser.State {
         this.game.load.image('pause-button', 'assets/images/pause-button.png');
 
         this.game.load.image('panda-image', 'assets/images/panda-image.png');
+        this.game.load.image('panda-image-green', 'assets/images/panda-image-green.png');
+        this.game.load.image('panda-image-blue', 'assets/images/panda-image-blue.png');
     }
 
     loadFonts() {
