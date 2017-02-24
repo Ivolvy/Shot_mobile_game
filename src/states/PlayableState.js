@@ -1,3 +1,5 @@
+import Points from 'objects/Points';
+
 class PlayableState extends Phaser.State {
 
     init() {
@@ -8,7 +10,6 @@ class PlayableState extends Phaser.State {
         this.optionCount = 1;
 
         this.intervalPandasChange = 20;
-        this.numberOfFeeded = 0;
         this.typeOfPanda = "panda-image"; //green - blue - ...
 
         this.nbCurrentPandaInList = 0;
@@ -276,9 +277,14 @@ class PlayableState extends Phaser.State {
 
         //Select type of panda (different color and attributed points)
         if(that.nbCurrentPandaInList == that.intervalPandasChange){
+
             that.typeOfPanda = "panda-image-green";
-        } else if(that.nbCurrentPandaInList == that.intervalPandasChange*2){
+            Points.setPointMultiplier(2);
+        }
+        else if(that.nbCurrentPandaInList == that.intervalPandasChange*2){
+
             that.typeOfPanda = "panda-image-blue";
+            Points.setPointMultiplier(3);
         }
 
         //Move all the sprite group to bottom
@@ -315,7 +321,6 @@ class PlayableState extends Phaser.State {
     }
 
 
-
     //On position object click
     destroyObject(part){
         if(part == 'left' && this.itemsTab[0][0] == 1){
@@ -329,7 +334,8 @@ class PlayableState extends Phaser.State {
             this.createElementToEnd();
         }
 
-        this.numberOfFeeded+=1;
+        //increase the total of points
+        Points.increaseTotalPoints();
     }
 
 
